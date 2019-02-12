@@ -10,18 +10,18 @@ Id int primary key AUTO_INCREMENT not null,
 PersonId int not null, -- person id
 Username varchar(16) not null,
 Email tinytext not null,
-Password varchar(40) not null, --coded in SHA-1
+Password varchar(40) not null, -- coded in SHA-1
 Role varchar(20) not null
 );
 
 create table Players(
 Id int primary key AUTO_INCREMENT not null,
-PersonId int not null, --person id
+PersonId int not null, -- person id
 DateOfBirth date not null,
 NickName varchar(35),
 Num tinyint,
 Debut date,
-TeamId int not null, --team id
+TeamId int not null, -- team id
 Status varchar(15) not null default 'Active'
 );
 
@@ -33,7 +33,7 @@ PersonId int not null
 create table Teams(
 Id int primary key AUTO_INCREMENT not null,
 Name varchar(50) not null,
-Image varchar(10), --t_id.jpg
+Image varchar(10), -- t_id.jpg
 StatsId int not null,
 CoachId int not null,
 Category varchar(30) not null,
@@ -43,8 +43,8 @@ SeasonId int not null
 create table Codes(
 Id int primary key AUTO_INCREMENT not null,
 Code varchar(9) not null,
-Owner int, --person id
-Inheritor varchar(15) not null --que rol da ej. un codigo de un jugador(owner) hereda un tutor
+Owner int, -- person id
+Inheritor varchar(15) not null -- que rol da ej. un codigo de un jugador(owner) hereda un tutor
 );
 
 create table PlayerStats(
@@ -62,10 +62,10 @@ StolenBases smallint not null default 0 -- SB
 );
 
 create table TeamStats(
-TeamId int primary key AUTO_INCREMENT not null, --team id as table id
-PlayedGames smallint not null, --PG
-Wins smallint not null, --W
-Loses smallint not null,--L
+TeamId int primary key AUTO_INCREMENT not null, -- team id as table id
+PlayedGames smallint not null, -- PG
+Wins smallint not null, -- W
+Loses smallint not null-- L
 );
 
 create table Seasons (
