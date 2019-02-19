@@ -1,6 +1,6 @@
 create table Persons(
 Id int primary key AUTO_INCREMENT not null,
-Name varchar(35) not null,
+FirstName varchar(35) not null,
 Lastname varchar(35) not null,
 Image varchar(10) -- p_id.jpg
 );
