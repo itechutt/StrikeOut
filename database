@@ -35,9 +35,9 @@ Id int primary key AUTO_INCREMENT not null,
 Name varchar(50) not null,
 Image varchar(10), -- t_id.jpg
 StatsId int not null,
-CoachId int not null,
+CoachId int not null, -- coach id
 Category varchar(30) not null,
-SeasonId int not null
+SeasonId int not null -- season id
 );
 
 create table Codes(
@@ -76,8 +76,8 @@ Name varchar(50) not null
 create table Matches (
 Id int primary key AUTO_INCREMENT not null,
 Category varchar(30) not null,
-HomeTeam int not null, -- team id
-GuestTeam int not null, -- team id
+HomeTeamId int not null, -- team id
+GuestTeamId int not null, -- team id
 Field varchar(35) not null,
 StartTime datetime not null,
 EndTime datetime not null,
@@ -87,7 +87,7 @@ RunsGuestTeam tinyint not null default 0
 
 create table Lineups(
 Id int primary key AUTO_INCREMENT not null,
-MatchId int not null,
+MatchId int not null, -- match id
 PlayerId int not null, -- player id
 TeamId int not null, -- team id
 BattingTurn tinyint not null,
@@ -108,18 +108,114 @@ Base2 int, -- player id
 Base3 int -- player id
 );
 
+
 create table MatchesHistory(
 Id int primary key AUTO_INCREMENT not null,
 MatchId int not null, -- match id
-PlayerId int not null, -- player id
--- TeamId int not null, -- team id para filtro
-Action varchar(10) not null, -- action
+PlayerId int not null, -- player id SOLO BATEADOR
+Action varchar(10) not null, -- ('S', 'H')
 ActionDate datetime not null default CURRENT_TIMESTAMP, --  pues cuando
-Inning tinyint not null -- en que entrada (servira de filtro)
+Inning tinyint not null, -- en que entrada (servira de filtro)
+FinalBase varchar(5) -- donde termino
+);
+
+-- ej. el bateador 12 realizo un hit y termino en segunda base
+
+create table Posts(
+Id int primary key AUTO_INCREMENT not null,
+UserId int not null, -- user id
+MatchId int not null, -- match id
+ContentType varchar(10) not null,
+Caption varchar(140),
+Content tinytext, -- en caso de ser una imagen o video
+PostDate datetime not null default current_timestamp
 );
 
 /*
 create table (
 Id int primary key AUTO_INCREMENT not null,
 );
+*/
+
+-- ----- yabes
+
+alter table Users
+add constraint FK_Person_User foreign key (PersonId) references Persons(Id);
+
+
+alter table Players
+add constraint FK_Person_Player foreign key (PersonId) references Persons(Id);
+
+alter table Players
+add constraint FK_Team_Player foreign key (TeamId) references Teams(Id);
+
+alter table Teams
+add constraint FK_Coach_Team foreign key (CoachId) references Coaches(Id);
+
+alter table Teams
+add constraint FK_Season_Team foreign key (SeasonId) references Seasons(Id);
+
+
+alter table Codes
+add constraint FK_Person_Code foreign key (Owner) references Persons(Id);
+
+
+alter table PlayerStats
+add constraint FK_Player_Stats foreign key (PlayerId) references Players(Id);
+
+
+alter table TeamStats
+add constraint FK_Team_Stats foreign key (TeamId) references Teams(Id);
+
+
+alter table Matches
+add constraint FK_HomeTeam_Match foreign key (HomeTeamId) references Teams(Id);
+
+alter table Matches
+add constraint FK_GuestTeam_Match foreign key (GuestTeamId) references Teams(Id);
+
+
+alter table Lineups
+add constraint FK_Match_Lineup foreign key (MatchId) references Matches(Id);
+
+alter table Lineups
+add constraint FK_Player_Lineup foreign key (PlayerId) references Players(Id);
+
+alter table Lineups
+add constraint FK_Team_Lineup foreign key (TeamId) references Teams(Id);
+
+
+alter table DisplayMatches
+add constraint FK_Match_DisplayMatch foreign key (MatchId) references Matches(Id);
+
+alter table DisplayMatches
+add constraint FK_BattingPlayer_DisplayMatch foreign key (Batter) references Players(Id);
+
+alter table DisplayMatches
+add constraint FK_Base1Player_DisplayMatch foreign key (Base1) references Players(Id);
+
+alter table DisplayMatches
+add constraint FK_Base2Player_DisplayMatch foreign key (Base2) references Players(Id);
+
+alter table DisplayMatches
+add constraint FK_Base3Player_DisplayMatch foreign key (Base3) references Players(Id);
+
+
+alter table Posts
+add constraint FK_User_Post foreign key (UserId) references Users(Id);
+
+alter table Posts
+add constraint FK_Match_Post foreign key (MatchId) references Matches(Id);
+
+
+alter table MatchesHistory
+add constraint FK_Match_MatchHistory foreign key (MatchId) references Matches(Id);
+
+alter table MatchesHistory
+add constraint FK_Player_MatchHistory foreign key (PlayerId) references Players(Id);
+
+
+/*
+alter table 
+add constraint FK_ foreign key (Id) references (Id);
 */
